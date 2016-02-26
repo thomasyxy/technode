@@ -4,13 +4,22 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>technode</title>
-	<link rel="stylesheet" href="/styles/room.css">
 	<link rel="stylesheet" type="text/css" href="/components/bootstrap/dist/css/bootstrap.css">
+	<link rel="stylesheet" href="/styles/room.css">
+	<!-- 自动生成 无需创建 -->
 	<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+	<!-- components:依赖模块目录 -->
 	<script type="text/javascript" src="/components/jquery/dist/jquery.js"></script>
 	<script type="text/javascript" src="/components/bootstrap/dist/js/bootstrap.js"></script>
 	<script type="text/javascript" src="/components/angular/angular.js"></script>
 	<script type="text/javascript" src="/components/angular-route/angular-route.js"></script>
+
+	<script type="text/javascript" src="/technode.js"></script>
+	<script type="text/javascript" src="/services/socket.js"></script>
+	<script type="text/javascript" src="/directives/auto-scroll-to-bottom.js"></script>
+	<script type="text/javascript" src="/directives/ctrl-enter-break-line.js"></script>
+	<script type="text/javascript" src="/controllers/room.js"></script>
+	<script type="text/javascript" src="/controllers/message-creator.js"></script>
 </head>
 <body>
 	<div class="navbar navbar-inverse navbar-fixed-top">
@@ -24,7 +33,7 @@
 						<img ng-src="{{me.avatarUrl}}" title="{{me.name}}" class="img-rounded" />
 					</li>
 					<li>
-						<a href="" ng-click="logout()">Log out</a>
+						<a ng-click="logout()">Log out</a>
 					</li>
 				</ul>
 			</nav>
@@ -33,11 +42,5 @@
 	<div class="container" style="margin-top:100px;">
 		<div class="row" ng-view></div>
 	</div>
-	<script type="text/javascript" src="/technode.js"></script>
-	<script type="text/javascript" src="/services/socket.js"></script>
-	<script type="text/javascript" src="/directives/auto-scroll-to-bottom.js"></script>
-	<script type="text/javascript" src="/directives/ctrl-enter-break-line.js"></script>
-	<script type="text/javascript" src="/controllers/room.js"></script>
-	<script type="text/javascript" src="/controllers/message-creator.js"></script>
 </body>
 </html>

@@ -9,6 +9,24 @@ var Controllers = require('./controllers');
 var port = process.env.PORT||3000;
 var messages = [];
 
+var signedCookieParser = cookieParser('technode');
+var MongoStore = require('connect-mongo')(session);
+var sessionStore = new MongoStore({
+	url: 'mongodb://localhost/technode'
+})
+
+// app.use(express.bodyParser());
+// app.use(express.cookieParser());
+// app.use(session({
+// 	secret: 'technode',
+// 	resave: true,
+// 	saveUninitialized: false,
+// 	cookie: {
+// 		maxAge: 60*1000
+// 	},
+// 	store: sessionStore
+// }));
+
 app.use(express.static(path.join(__dirname,'/static')));//将静态文件放在static目录下
 app.use(function(req,res){
 	res.sendFile(path.join(__dirname,'./static/index.html'));//除了静态文件的请求，其他所有的HTTP请求，都会输出index.html
@@ -20,13 +38,16 @@ app.use(bodyParser.urlencoded({
 }))
 app.use(cookieParser());
 app.use(session({
-	secret: 'technade',
+	secret: 'technode',
 	resave: true,
 	saveUninitialized: false,
 	cookie: {
 		maxAge: 60 * 1000
-	}
-}))
+	},
+  store: sessionStore
+}));
+
+
 app.get('/api/validate', function(req,res){
 	var _userId = req.session._userId;
 	if(_userId){
@@ -63,12 +84,26 @@ app.post('/api/login', function(req, res){
 app.get('/api/logout',function(req,res){
 	req.session._userId = null;
 	res.json(401);
-})
+});
 
 var server = app.listen(port,function(){
 	console.log('technode is on port : ' + port + '!');
 });
 var io = require('socket.io').listen(server);
+io.set('authorization', function(handshakeData, accept){
+	signedCookieParser(handshakeData, {}, function(err){
+		if(err){
+			accept(err.message, false);
+		}else{
+			handshakeData.session = session;
+			if(session._userId){
+				accept(null, true);
+			}else{
+				accept('No login');
+			}
+		}
+	});
+});
 
 //服务器监听connection事件，有用户连接时，会产生一个socket对象
 io.on('connection',function(socket){
@@ -80,4 +115,3 @@ io.on('connection',function(socket){
 		io.sockets.emit('messageAdded',message);
 	});
 });
-

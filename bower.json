@@ -15,6 +15,7 @@
   "dependencies": {
     "bootstrap": "~3.3.6",
     "angular": "~1.4.8",
-    "angular-route": "~1.4.8"
+    "angular-route": "~1.4.8",
+    "angular-moment": "~0.10.3"
   }
 }

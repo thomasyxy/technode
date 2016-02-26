@@ -2,7 +2,7 @@ var db = require('../models');
 var async = require('async');
 var gravatar = require('gravatar');
 
-exports.findUserById = function(_userid, callback){
+exports.findUserById = function(_userId, callback){
 	db.User.findOne({
 		_id: _userId
 	},callback);
